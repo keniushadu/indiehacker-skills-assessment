@@ -68,5 +68,6 @@ npm run start
 [MIT](LICENSE)
 
 ## 效果图
+![效果](img/screenshot_pc.png)
 
 ![效果](img/screenshot.png)
