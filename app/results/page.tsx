@@ -1,19 +1,25 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { getResults } from '../../utils/storage'
+import { useEffect, useState, useCallback } from 'react'
+import { getResults, clearResults } from '../../utils/storage'
 import HexagonChart from '../../components/HexagonChart'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { motion } from 'framer-motion';
 
 export default function Results() {
   const [results, setResults] = useState<Record<string, number> | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const storedResults = getResults()
     setResults(storedResults)
   }, [])
+
+  const handleRestart = useCallback(() => {
+    clearResults()
+    router.push('/')
+  }, [router])
 
   if (!results) {
     return <div>加载中...</div>
@@ -63,12 +69,14 @@ export default function Results() {
           ))
         )}
       </motion.div>
-      <Link href="/" className="block mt-8">
-        <Button>重新进行评估</Button>
-      </Link>
+      <div className="mt-8">
+        <Button
+          onClick={handleRestart}
+          className="hover:scale-105 transition-transform"
+        >
+          重新进行评估
+        </Button>
+      </div>
     </div>
   )
 }
-
-// 请确保安装 framer-motion: npm install framer-motion
-

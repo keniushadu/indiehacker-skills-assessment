@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Indie Hacker Skills Assessment',
+  description: 'Help indie hackers assess and visualize their entrepreneurial skills across different dimensions.',
 }
 
 export default function RootLayout({

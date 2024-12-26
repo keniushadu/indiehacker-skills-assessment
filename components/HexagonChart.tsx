@@ -20,10 +20,16 @@ export default function HexagonChart({ data }: HexagonChartProps) {
           chartInstance.current.destroy()
         }
 
-        // Create gradient
-        const gradient = ctx.createLinearGradient(0, 0, 0, 400)
-        gradient.addColorStop(0, 'rgba(129, 140, 248, 0.2)')   // Indigo lighter
-        gradient.addColorStop(1, 'rgba(99, 102, 241, 0.1)')    // Indigo darker
+        // Create gradients
+        const fillGradient = ctx.createLinearGradient(0, 0, 0, 400)
+        fillGradient.addColorStop(0, 'rgba(56, 189, 248, 0.25)')  // Sky blue
+        fillGradient.addColorStop(0.5, 'rgba(139, 92, 246, 0.15)') // Purple
+        fillGradient.addColorStop(1, 'rgba(6, 182, 212, 0.1)')    // Cyan
+
+        const borderGradient = ctx.createLinearGradient(0, 0, 0, 400)
+        borderGradient.addColorStop(0, 'rgba(56, 189, 248, 0.9)')  // Sky blue
+        borderGradient.addColorStop(0.5, 'rgba(139, 92, 246, 0.9)') // Purple
+        borderGradient.addColorStop(1, 'rgba(6, 182, 212, 0.9)')    // Cyan
 
         chartInstance.current = new Chart(ctx, {
           type: 'radar',
@@ -31,17 +37,18 @@ export default function HexagonChart({ data }: HexagonChartProps) {
             labels: Object.keys(data),
             datasets: [{
               data: Object.values(data),
-              backgroundColor: gradient,
-              borderColor: 'rgba(99, 102, 241, 0.9)',
-              pointBackgroundColor: 'rgba(99, 102, 241, 1)',
-              pointBorderColor: '#ffffff',
-              pointHoverBackgroundColor: '#ffffff',
-              pointHoverBorderColor: 'rgba(99, 102, 241, 1)',
-              borderWidth: 2.5,
-              pointRadius: 4.5,
+              backgroundColor: fillGradient,
+              borderColor: borderGradient,
+              pointBackgroundColor: 'rgba(255, 255, 255, 1)',
+              pointBorderColor: 'rgba(139, 92, 246, 1)',
+              pointHoverBackgroundColor: 'rgba(139, 92, 246, 1)',
+              pointHoverBorderColor: 'rgba(255, 255, 255, 1)',
+              borderWidth: 3,
+              pointRadius: 4,
               pointHoverRadius: 7,
               pointBorderWidth: 2,
-              fill: true
+              fill: true,
+              tension: 0.15
             }]
           },
           options: {
@@ -51,11 +58,11 @@ export default function HexagonChart({ data }: HexagonChartProps) {
               r: {
                 angleLines: {
                   display: true,
-                  color: 'rgba(0, 0, 0, 0.08)',
+                  color: 'rgba(255, 255, 255, 0.1)',
                   lineWidth: 1
                 },
                 grid: {
-                  color: 'rgba(0, 0, 0, 0.08)',
+                  color: 'rgba(139, 92, 246, 0.1)',
                   circular: true,
                   lineWidth: 1
                 },
@@ -65,7 +72,7 @@ export default function HexagonChart({ data }: HexagonChartProps) {
                 ticks: {
                   stepSize: 1,
                   backdropColor: 'transparent',
-                  color: 'rgba(0, 0, 0, 0.5)',
+                  color: 'rgba(255, 255, 255, 0.7)',
                   font: {
                     size: 10,
                     family: 'system-ui'
@@ -74,13 +81,13 @@ export default function HexagonChart({ data }: HexagonChartProps) {
                   z: 1
                 },
                 pointLabels: {
-                  color: 'rgba(0, 0, 0, 0.7)',
+                  color: 'rgba(255, 255, 255, 0.9)',
                   font: {
-                    size: 13,
-                    weight: '600',
+                    size: 14,
+                    weight: '500',
                     family: 'system-ui'
                   },
-                  padding: 12
+                  padding: 15
                 }
               }
             },
@@ -89,15 +96,15 @@ export default function HexagonChart({ data }: HexagonChartProps) {
                 display: false
               },
               tooltip: {
-                backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                titleColor: '#000',
-                bodyColor: '#000',
+                backgroundColor: 'rgba(17, 25, 40, 0.95)',
+                titleColor: 'rgba(255, 255, 255, 0.9)',
+                bodyColor: 'rgba(255, 255, 255, 0.9)',
                 bodyFont: {
                   size: 12,
                   weight: '500'
                 },
                 padding: 12,
-                borderColor: 'rgba(0, 0, 0, 0.1)',
+                borderColor: 'rgba(139, 92, 246, 0.3)',
                 borderWidth: 1,
                 displayColors: false,
                 callbacks: {
@@ -109,20 +116,20 @@ export default function HexagonChart({ data }: HexagonChartProps) {
             },
             elements: {
               line: {
-                tension: 0.25
+                tension: 0.2
               }
             },
             layout: {
               padding: {
-                top: 15,
-                right: 15,
-                bottom: 15,
-                left: 15
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
               }
             },
             animation: {
-              duration: 750,
-              easing: 'easeOutQuart'
+              duration: 1000,
+              easing: 'easeInOutQuart'
             }
           }
         })
@@ -137,8 +144,11 @@ export default function HexagonChart({ data }: HexagonChartProps) {
   }, [data])
 
   return (
-    <div className="w-full max-w-md aspect-square p-6 bg-white rounded-xl shadow-sm">
-      <canvas ref={chartRef} />
+    <div className="w-full max-w-md aspect-square p-8 bg-[#111928] rounded-2xl shadow-lg border border-purple-500/20 backdrop-blur-sm">
+      <div className="relative w-full h-full">
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-purple-500/10 to-cyan-500/10 rounded-xl" />
+        <canvas ref={chartRef} className="relative z-10" />
+      </div>
     </div>
   )
 }
