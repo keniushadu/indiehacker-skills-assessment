@@ -25,11 +25,11 @@ export default function WeaknessAnalysis({ scores, threshold }: WeaknessAnalysis
 
   if (weakSkills.length === 0) {
     return (
-      <div className="mt-12 max-w-2xl mx-auto p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-          {t.ui.congratulations}
+      <div className="bg-gradient-to-r from-purple-100/50 to-cyan-100/50 dark:from-purple-900/20 dark:to-cyan-900/20 rounded-2xl p-6 sm:p-8 mt-12 max-w-2xl mx-auto">
+        <h2 className="text-xl sm:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-cyan-600 mb-4">
+          🎉 {t.ui.congratulations}
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
+        <p className="text-gray-600 dark:text-gray-300">
           {t.ui.keepImproving}
         </p>
         <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
@@ -42,7 +42,7 @@ export default function WeaknessAnalysis({ scores, threshold }: WeaknessAnalysis
   }
 
   return (
-    <div className="mt-12 max-w-2xl mx-auto">
+    <div className="bg-gradient-to-r from-red-100/50 to-orange-100/50 dark:from-red-900/20 dark:to-orange-900/20 rounded-2xl p-6 sm:p-8 mt-12 max-w-2xl mx-auto">
       <h2 className="text-xl font-semibold mb-6 text-center text-gray-800 dark:text-gray-200">
         {t.ui.skillImprovement}
       </h2>
