@@ -6,10 +6,12 @@ import { questions } from '../utils/questions'
 import { saveResults } from '../utils/storage'
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function QuestionnaireForm() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, number>>({})
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   // 预计算总问题数
@@ -46,19 +48,16 @@ export default function QuestionnaireForm() {
   const calculateResults = useCallback(() => {
     const results: Record<string, { sum: number; count: number }> = {}
     
-    // 初始化结果对象
     questions.forEach(({ category }) => {
       results[category] = { sum: 0, count: 0 }
     })
 
-    // 计算总和和计数
     Object.entries(answers).forEach(([key, value]) => {
       const category = key.split('-')[0]
       results[category].sum += value
       results[category].count += 1
     })
 
-    // 计算平均值
     return Object.entries(results).reduce((acc, [category, { sum, count }]) => {
       acc[category] = count > 0 ? sum / count : 0
       return acc
@@ -67,7 +66,7 @@ export default function QuestionnaireForm() {
 
   // 处理答案选择
   const handleAnswer = useCallback(async (value: number) => {
-    if (!currentCategory) return
+    if (!currentCategory || isLoading) return
 
     const newAnswers = {
       ...answers,
@@ -76,42 +75,89 @@ export default function QuestionnaireForm() {
     setAnswers(newAnswers)
 
     if (currentQuestionIndex < totalQuestions - 1) {
-      // 不是最后一个问题，直接更新索引
       setCurrentQuestionIndex(prev => prev + 1)
     } else {
-      // 是最后一个问题，使用 Promise 异步处理结果计算和导航
+      setIsLoading(true)
       try {
         const results = calculateResults()
         await saveResults(results)
+        // 添加一个小延迟，确保状态已保存
+        await new Promise(resolve => setTimeout(resolve, 500))
         router.push('/results')
       } catch (error) {
         console.error('Error saving results:', error)
+        setIsLoading(false)
       }
     }
-  }, [currentCategory, currentQuestionInCategory, currentQuestionIndex, totalQuestions, answers, calculateResults, router])
+  }, [currentCategory, currentQuestionInCategory, currentQuestionIndex, totalQuestions, answers, calculateResults, router, isLoading])
 
   if (!currentCategory) return null
 
   const answerKey = `${currentCategory.category}-${currentQuestionInCategory}`
   const currentAnswer = answers[answerKey]
 
+  const options = [
+    { label: "非常不同意", value: 1 },
+    { label: "不同意", value: 2 },
+    { label: "一般", value: 3 },
+    { label: "同意", value: 4 },
+    { label: "非常同意", value: 5 }
+  ]
+
   return (
-    <div className="space-y-8">
-      <Progress value={progress} className="w-full" />
-      <h2 className="text-xl font-bold">{currentCategory.category}</h2>
-      <p className="text-lg">{currentCategory.questions[currentQuestionInCategory]}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
-        {["非常不同意", "不同意", "一般", "同意", "非常同意"].map((label, index) => (
-          <Button
-            key={index}
-            onClick={() => handleAnswer(index + 1)}
-            variant={currentAnswer === index + 1 ? "default" : "outline"}
-            className="w-full text-sm p-2 h-auto transition-all duration-200 hover:scale-105"
-          >
-            {label}
-          </Button>
-        ))}
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
+          <span>问题 {currentQuestionIndex + 1}/{totalQuestions}</span>
+          <span>{Math.round(progress)}%</span>
+        </div>
+        <Progress value={progress} className="h-2" />
       </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentQuestionIndex}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+          className="space-y-6"
+        >
+          <div className="space-y-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
+              {currentCategory.category}
+            </h2>
+            <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300">
+              {currentCategory.questions[currentQuestionInCategory]}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+            {options.map(({ label, value }) => (
+              <Button
+                key={value}
+                onClick={() => handleAnswer(value)}
+                variant={currentAnswer === value ? "default" : "outline"}
+                disabled={isLoading}
+                className={`
+                  w-full py-4 h-auto transition-all duration-200
+                  ${currentAnswer === value ? 
+                    'bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700' : 
+                    'hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }
+                  ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+                `}
+              >
+                <div className="text-center">
+                  <div className="text-sm font-medium">
+                    {isLoading && value === currentAnswer ? '保存中...' : label}
+                  </div>
+                </div>
+              </Button>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }
