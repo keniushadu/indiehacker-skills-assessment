@@ -7,14 +7,21 @@ import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { useAssessmentStore } from '@/store/assessment'
 import { useLanguageStore } from '@/store/language'
-import { translations } from '@/utils/i18n'
+import { translations, type Locale } from '@/utils/i18n'
+
+type CategoryType = keyof typeof translations.zh.categories
+
+interface Category {
+  category: CategoryType
+  questions: string[]
+}
 
 export default function QuestionnaireForm() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const router = useRouter()
   const { answers, setAnswers } = useAssessmentStore()
   const { locale } = useLanguageStore()
-  const t = translations[locale]
+  const t = translations[locale as Locale]
 
   // 预计算总问题数
   const totalQuestions = questions.reduce(
@@ -28,7 +35,7 @@ export default function QuestionnaireForm() {
     for (const category of questions) {
       if (currentQuestionIndex < questionCount + category.questions.length) {
         return {
-          currentCategory: category,
+          currentCategory: category as Category,
           currentQuestionInCategory: currentQuestionIndex - questionCount
         }
       }

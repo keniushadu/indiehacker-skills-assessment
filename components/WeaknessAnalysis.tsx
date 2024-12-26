@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { useLanguageStore } from '@/store/language'
-import { translations } from '@/utils/i18n'
+import { translations, type Locale } from '@/utils/i18n'
+
+type CategoryType = keyof typeof translations.zh.categories
 
 interface Suggestion {
   title: string;
@@ -21,7 +23,7 @@ export default function WeaknessAnalysis({ scores, threshold }: WeaknessAnalysis
   // 找出低于阈值的技能
   const weakSkills = Object.entries(scores)
     .filter(([_, score]) => score < threshold)
-    .map(([skill]) => skill)
+    .map(([skill]) => skill as CategoryType)
 
   if (weakSkills.length === 0) {
     return (
@@ -29,7 +31,7 @@ export default function WeaknessAnalysis({ scores, threshold }: WeaknessAnalysis
         <h2 className="text-xl sm:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-cyan-600 mb-4">
           🎉 {t.ui.congratulations}
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="text-gray-600 dark:text-gray-300 mb-4">
           {t.ui.keepImproving}
         </p>
         <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
@@ -48,7 +50,7 @@ export default function WeaknessAnalysis({ scores, threshold }: WeaknessAnalysis
       </h2>
       <div className="space-y-6">
         {weakSkills.map((skill) => {
-          const suggestionData = t.suggestions[skill];
+          const suggestionData = t.suggestions[skill as keyof typeof t.suggestions];
           return (
             <div
               key={skill}

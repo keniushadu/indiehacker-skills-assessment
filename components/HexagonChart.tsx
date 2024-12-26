@@ -51,7 +51,7 @@ export default function HexagonChart({ data }: HexagonChartProps) {
 
   // 转换数据格式，并保留一位小数
   const chartData = Object.entries(data).map(([key, value]) => ({
-    skill: t.categories[key],
+    skill: t.categories[key as keyof typeof t.categories],
     value: Number(value.toFixed(1)) || 0,
   }))
 
