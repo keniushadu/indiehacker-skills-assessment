@@ -2,6 +2,8 @@
 
 import { ResponsiveRadar } from '@nivo/radar'
 import { useEffect, useState } from 'react'
+import { useLanguageStore } from '@/store/language'
+import { translations } from '@/utils/i18n'
 
 interface HexagonChartProps {
   data: Record<string, number>
@@ -9,6 +11,8 @@ interface HexagonChartProps {
 
 export default function HexagonChart({ data }: HexagonChartProps) {
   const [windowWidth, setWindowWidth] = useState(0)
+  const { locale } = useLanguageStore()
+  const t = translations[locale]
 
   useEffect(() => {
     // 初始化窗口宽度
@@ -47,7 +51,7 @@ export default function HexagonChart({ data }: HexagonChartProps) {
 
   // 转换数据格式，并保留一位小数
   const chartData = Object.entries(data).map(([key, value]) => ({
-    skill: key,
+    skill: t.categories[key],
     value: Number(value.toFixed(1)) || 0,
   }))
 

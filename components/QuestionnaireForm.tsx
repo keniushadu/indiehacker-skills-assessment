@@ -6,11 +6,15 @@ import { questions } from '@/utils/questions'
 import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { useAssessmentStore } from '@/store/assessment'
+import { useLanguageStore } from '@/store/language'
+import { translations } from '@/utils/i18n'
 
 export default function QuestionnaireForm() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const router = useRouter()
   const { answers, setAnswers } = useAssessmentStore()
+  const { locale } = useLanguageStore()
+  const t = translations[locale]
 
   // 预计算总问题数
   const totalQuestions = questions.reduce(
@@ -47,17 +51,18 @@ export default function QuestionnaireForm() {
     }
   }, [currentCategory, currentQuestionIndex, totalQuestions, answers, setAnswers, router])
 
+
   if (!currentCategory) return null
 
   const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100
-  const currentQuestion = currentCategory.questions[currentQuestionInCategory]
+  const currentQuestion = t.questions[currentCategory.category][currentQuestionInCategory]
   const currentAnswer = answers[currentQuestionIndex]
 
   return (
     <div className="max-w-2xl mx-auto px-4">
       <div className="mb-8">
         <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
-          <span>{currentCategory.category}</span>
+          <span>{t.categories[currentCategory.category]}</span>
           <span>{currentQuestionIndex + 1} / {totalQuestions}</span>
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -81,13 +86,7 @@ export default function QuestionnaireForm() {
         </h2>
 
         <div className="space-y-4">
-          {[
-            { value: 5, label: '非常熟练，可以教导他人' },
-            { value: 4, label: '掌握得不错，能独立处理' },
-            { value: 3, label: '基本了解，需要时可以学习' },
-            { value: 2, label: '了解一些，但不太熟悉' },
-            { value: 1, label: '完全不了解' },
-          ].map(({ value, label }) => (
+          {t.answers.map(({ value, label }) => (
             <Button
               key={value}
               onClick={() => handleAnswer(value)}

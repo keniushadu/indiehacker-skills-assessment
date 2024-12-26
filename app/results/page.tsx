@@ -5,10 +5,14 @@ import { redirect } from 'next/navigation'
 import HexagonChart from '@/components/HexagonChart'
 import WeaknessAnalysis from '@/components/WeaknessAnalysis'
 import { useAssessmentStore } from '@/store/assessment'
+import { useLanguageStore } from '@/store/language'
+import { translations } from '@/utils/i18n'
 import { questions } from '@/utils/questions'
 
 export default function Results() {
   const { answers, clearAnswers } = useAssessmentStore()
+  const { locale } = useLanguageStore()
+  const t = translations[locale]
 
   useEffect(() => {
     // 如果没有答案数据，重定向到首页
@@ -43,10 +47,10 @@ export default function Results() {
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-cyan-600 mb-4">
-          您的 Indie Hacker 技能六边形
+          {t.ui.title}
         </h1>
         <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
-          下面展示了您在各个领域的技能水平评估结果
+          {t.ui.subtitle}
         </p>
       </div>
 
@@ -62,7 +66,7 @@ export default function Results() {
             onClick={handleRestart}
             className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
           >
-            重新开始评估
+            {t.ui.restart}
           </button>
         </div>
       </div>
