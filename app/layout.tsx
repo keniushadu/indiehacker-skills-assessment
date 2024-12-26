@@ -33,7 +33,7 @@ export default function RootLayout({
           </main>
 
           {/* 页脚 */}
-          <footer className="relative mt-auto py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+          <footer className="relative mt-auto py-3 text-center text-sm text-gray-500 dark:text-gray-400">
             <p>Made with ❤️ for Indie Hackers</p>
           </footer>
         </div>

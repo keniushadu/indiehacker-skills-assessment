@@ -1,73 +1,72 @@
-# Indie Hacker Skills Assessment
+# Indie Hacker 技能评估
 
-A modern web application built with Next.js that helps indie hackers assess and visualize their entrepreneurial skills across different dimensions.
+一个帮助独立开发者评估自己在各个领域技能水平的在线工具。
 
-## Features
+## 特点
 
-- 📊 Interactive Skills Hexagon Chart
-- 🎯 Self-assessment Interface
-- 💾 Local Storage for Progress
-- 📱 Responsive Design
-- 🎨 Modern UI with Tailwind CSS
+- 📊 六大领域技能评估：商业洞察、产品设计、编码开发、运营营销、增长变现、自我管理
+- 🌐 中英文双语支持
+- 📱 响应式设计，支持移动端和桌面端
+- 🎨 美观的 UI 设计和流畅的动画效果
+- 📈 可视化的评估结果展示
+- 💡 针对性的提升建议
 
-## Tech Stack
+## 本地开发
 
-- [Next.js 14](https://nextjs.org/) - React Framework
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [Radix UI](https://www.radix-ui.com/) - UI Components
-- [Chart.js](https://www.chartjs.org/) - Data Visualization
-- [React Hook Form](https://react-hook-form.com/) - Form Management
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.x or later
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/indiehacker-skills-assessment.git
-cd indiehacker-skills-assessment
-```
-
-2. Install dependencies:
-```bash
+# 安装依赖
 npm install
-# or
-yarn install
-```
 
-3. Run the development server:
-```bash
+# 启动开发服务器
 npm run dev
-# or
-yarn dev
+
+# 构建生产版本
+npm run build
+
+# 启动生产服务器
+npm run start
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Vercel 部署指南
 
-## Project Structure
+1. Fork 或克隆此仓库到你的 GitHub 账号
 
-```
-├── app/                  # Next.js app directory
-├── components/          # React components
-├── lib/                 # Utility functions
-├── public/             # Static assets
-└── styles/             # Global styles
-```
+2. 在 [Vercel](https://vercel.com) 注册账号（如果还没有）
 
-## Contributing
+3. 在 Vercel 控制台中点击 "New Project"
 
-Feel free to open issues and pull requests for any improvements you want to add.
+4. 选择你 fork 的仓库，点击 "Import"
+
+5. 配置项目：
+   - Framework Preset: Next.js
+   - Root Directory: ./
+   - Build Command: `npm run build`
+   - Output Directory: .next
+
+6. 点击 "Deploy" 开始部署
+
+项目会自动部署，并生成一个可访问的 URL。每次推送到主分支时，Vercel 都会自动重新部署。
+
+### 自定义域名（可选）
+
+1. 在 Vercel 项目设置中点击 "Domains"
+2. 添加你的域名
+3. 按照 Vercel 的指引配置 DNS 记录
+4. 等待 DNS 生效（通常需要几分钟到几小时）
+
+## 技术栈
+
+- Next.js 14
+- React
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Zustand
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[MIT](LICENSE)
 
-## Acknowledgments
+## 效果图
 
-- Thanks to all the open source projects that made this possible
-- Inspired by indie hackers worldwide
+![效果](img/screenshot.png)

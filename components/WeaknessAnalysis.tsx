@@ -25,7 +25,7 @@ export default function WeaknessAnalysis({ scores, threshold }: WeaknessAnalysis
 
   if (weakSkills.length === 0) {
     return (
-      <div className="bg-gradient-to-r from-purple-100/50 to-cyan-100/50 dark:from-purple-900/20 dark:to-cyan-900/20 rounded-2xl p-6 sm:p-8 mt-12 max-w-2xl mx-auto">
+      <div className="bg-gradient-to-r from-purple-100/50 to-cyan-100/50 dark:from-purple-900/20 dark:to-cyan-900/20 rounded-2xl p-4 sm:p-8 mt-12 max-w-2xl mx-auto">
         <h2 className="text-xl sm:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-cyan-600 mb-4">
           🎉 {t.ui.congratulations}
         </h2>
