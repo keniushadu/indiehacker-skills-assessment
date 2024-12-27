@@ -51,10 +51,14 @@ export default function QuestionnaireForm() {
     const newAnswers = [...answers, value]
     setAnswers(newAnswers)
 
+    // 添加一个极短的延迟来处理最后一题的路由跳转
     if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex(prev => prev + 1)
     } else {
-      router.push('/results')
+      // 立即跳转，不等待状态更新
+      requestAnimationFrame(() => {
+        router.push('/results')
+      })
     }
   }, [currentCategory, currentQuestionIndex, totalQuestions, answers, setAnswers, router])
 
@@ -102,7 +106,7 @@ export default function QuestionnaireForm() {
                 w-full py-4 h-auto transition-all duration-200
                 ${currentAnswer === value ? 
                   'bg-gradient-to-r from-purple-600 to-cyan-600 text-white' : 
-                  'hover:bg-gray-100 dark:hover:bg-gray-700'
+                  'hover:bg-transparent active:bg-transparent'
                 }
               `}
             >
